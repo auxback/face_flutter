@@ -6,7 +6,7 @@ Ainda está muito no início.
 
 Funções já resolvidas:
 - Widget para abrir câmera, tirar foto, mostrá-la e guardar em cache;
-- Forma de enviar os dados do Colaborador por JSON, principalmente a foto por BASE64;
+- Forma de enviar os dados do Colaborador por JSON, principalmente a foto, por BASE64;
 
 
 
