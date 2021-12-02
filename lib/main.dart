@@ -6,17 +6,15 @@ import 'package:face_teste/views/cnpj_home_screen.dart';
 import 'package:face_teste/views/colabs_screen.dart';
 //import 'package:face_teste/views/providerCamera.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 
-import 'exemplo.dart';
 import 'views/colab_reg_screen.dart';
 
-late var firstCamera;
+//late CameraDescription firstCamera;
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  firstCamera = cameras.first;
+  //WidgetsFlutterBinding.ensureInitialized();
+  //final cameras = await availableCameras();
+  //firstCamera = cameras.first;
   runApp(MyApp());
 }
 
@@ -36,8 +34,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.ASK_CNPJ_SCREEN: (ctx) => AskCnpjScreen(),
           AppRoutes.CNPJ_HOME_SCREEN: (ctx) => CnpjHomeScreen(),
           AppRoutes.COLABS_SCREEN: (ctx) => ColabsScreen(),
-          AppRoutes.COLAB_REG_SCREEN: (ctx) =>
-              TakePictureScreen(camera: firstCamera),
+          AppRoutes.COLAB_REG_SCREEN: (ctx) => FormScreen(),
+          //AppRoutes.COLABS_REG_SCREEN: (ctx) => ColabsScreen(),
         },
       ),
     );

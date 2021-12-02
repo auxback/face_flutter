@@ -4,8 +4,10 @@ import 'package:face_teste/provider/providerCamera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen({
+// No momento, não estou usando esse, mas sim "exemplo.dartq"
+
+class TakePictureScreen2 extends StatefulWidget {
+  const TakePictureScreen2({
     Key? key,
     required this.camera,
   }) : super(key: key);
@@ -13,17 +15,19 @@ class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  TakePictureScreen2State createState() => TakePictureScreen2State();
 }
 
-class TakePictureScreenState extends State<TakePictureScreen> {
-  late var _controller = Provider.of<ProviderCamera>(context).controller;
-  late var _initializeControllerFuture =
+class TakePictureScreen2State extends State<TakePictureScreen2> {
+  late ProviderCamera camProvider = Provider.of<ProviderCamera>(context);
+  late CameraController _controller = camProvider.controller;
+  late Future<void> _initializeControllerFuture =
       Provider.of<ProviderCamera>(context).initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
+    camProvider.inicializaCamera();
     // To display the current output from the Camera,
     // create a CameraController.
     _controller = CameraController(

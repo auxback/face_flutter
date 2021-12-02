@@ -7,6 +7,17 @@ import 'package:http/http.dart' as http;
 class ProviderCamera with ChangeNotifier {
   late CameraController controller;
   late Future<void> initializeControllerFuture;
+  //veio lá de main() fica como var global
+  late CameraDescription firstCamera;
+  //tmbm veio de main() era usado dentro main
+
+  late String imagePath;
+
+  Future<void> inicializaCamera() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    firstCamera = cameras.first;
+  }
 
   //dps colocar dentro de uma classe de constantes
   String baseUrl = 'https://face-b60c2-default-rtdb.firebaseio.com/';

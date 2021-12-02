@@ -1,5 +1,7 @@
+import 'package:face_teste/provider/owner.dart';
 import 'package:face_teste/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CnpjHomeScreen extends StatelessWidget {
   CnpjHomeScreen();
@@ -46,7 +48,7 @@ class CnpjHomeScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context)
-                          .pushNamed(AppRoutes.COLAB_CAM_SCREEN);
+                          .pushNamed(AppRoutes.COLAB_REG_SCREEN);
                     },
                     child: Text('CADASTRO'),
                   ),

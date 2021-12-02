@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:camera_camera/camera_camera.dart';
+import 'package:face_teste/models/colab.dart';
+import 'package:face_teste/provider/owner.dart';
+import 'package:face_teste/widgets/exemplo.dart';
+import 'package:face_teste/provider/providerCamera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:shop/providers/product.dart';
-//import 'package:shop/providers/products.dart';
 
-// Há 2 formas de passar o Product: null ou por arguments
+// Há 2 formas de passar o Product: null ou por "arguments"
 
 class FormScreen extends StatefulWidget {
   @override
@@ -12,9 +17,20 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   //----------------------//----------------------//----------------------//----
-  final _priceFocus = FocusNode();
+
   final _descriptionFocus = FocusNode();
   final _imageUrlFocus = FocusNode();
+
+//
+  late ProviderCamera camProvider =
+      Provider.of<ProviderCamera>(context, listen: false);
+  late CameraDescription camera = camProvider.firstCamera;
+
+  late OwnerProvider ownerProvider = Provider.of(context, listen: false);
+
+  bool permiteFoto = false;
+
+  late File image;
 
   final _imageUrlController = TextEditingController();
 
@@ -31,7 +47,7 @@ class _FormScreenState extends State<FormScreen> {
   void initState() {
     print('initState');
     super.initState();
-    _imageUrlFocus.addListener(_updateImage);
+    //_imageUrlFocus.addListener(_updateImage);
   }
 
   //----------------------//----------------------//----------------------//----
@@ -60,6 +76,7 @@ class _FormScreenState extends State<FormScreen> {
         _imageUrlController.text = _formData['imageUrl'];
       } else {
         //se "_formData" começa sem info, como que é feito isto ?
+        // precise ser por aqui, pois pode entrar com valor ou não
         _formData['price'] = '';
       }
     }
@@ -74,6 +91,7 @@ class _FormScreenState extends State<FormScreen> {
   //----------------------//----------------------//----------------------//----
   // momento em q todas as etapas são salvas, onde é feito no ultimo textFormField
   Future<void> _saveForm() async {
+    //aqui verifica se as informações estão corretas (sem erro e etc)
     bool isValid = _formGK.currentState!.validate();
 
     //sai do método caso n esteja válido
@@ -82,17 +100,17 @@ class _FormScreenState extends State<FormScreen> {
     //salva as infos que foram alteradas no formulario
     _formGK.currentState!.save();
 
-    //att as infos ou criando uma nova
-    /*
-    final product = Product(
-      id: _formData['id'],
-      title: _formData['title'],
-      description: _formData['description'],
-      price: _formData['price'],
-      imageUrl: _formData['imageUrl'],
-    );
-    */
+    image = File(camProvider.imagePath);
 
+    // preciso deixar essa criação dentro do try
+    /*
+    final colab = Colab(
+      //id seria o do servidor
+      id: _formData['id'],
+      name: _formData['name'],
+      image: image,
+    );
+*/
     setState(() {
       _isLoading = true;
     });
@@ -100,13 +118,15 @@ class _FormScreenState extends State<FormScreen> {
     //final products = Provider.of<Products>(context, listen: false);
 
     try {
+      //quando entrar no formulário
       // ve se o produto tem id (não existe ainda)
       if (_formData['id'] == null) {
-        //  adiciona um novo produto com id do servidor
-        //await products.addProduct(product);
+        // add colab com nome em String. A imagem no tipo "File" é convertido p/ b64 em "ownerProvider.addColab()"
+        await ownerProvider.addColab(
+            _formData['name'], File(camProvider.imagePath));
       } else {
-        //  só atualiza caso tenha o id
-        //await products.updateProduct(product);
+        //  caso exista (tenha "id")
+        //await products.updateColab(colab);
       }
       // retorna pra tela anterior, finalizando o form
       Navigator.of(context).pop();
@@ -147,10 +167,12 @@ class _FormScreenState extends State<FormScreen> {
   void dispose() {
     print('dispose');
     super.dispose();
-    _priceFocus.dispose();
+    //_priceFocus.dispose();
     _descriptionFocus.dispose();
     _imageUrlFocus.removeListener(_updateImage);
     _imageUrlFocus.dispose();
+    // talvez n seja aqui, mas é um teste
+    //permiteFoto = false;
   }
 
   //----------------------//----------------------//----------------------//----
@@ -160,7 +182,7 @@ class _FormScreenState extends State<FormScreen> {
     //print('build');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro de Produto'),
+        title: Text('Cadastro do Colaborador'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
@@ -181,18 +203,20 @@ class _FormScreenState extends State<FormScreen> {
               child: ListView(
                 padding: EdgeInsets.all(15.0),
                 children: [
+                  // bom lembrar que o "focus" depende do logo abaixo
                   TextFormField(
                     //valor inicial, no caso do objeto já existir
-                    initialValue: _formData['title'],
-                    decoration: InputDecoration(labelText: 'Título'),
+                    initialValue: _formData['name'],
+                    decoration: InputDecoration(labelText: 'nome'),
                     // vai pra próximo elemento, mas precisa do "foco"
                     textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) =>
+                    /*onFieldSubmitted: (_) =>
                         FocusScope.of(context).requestFocus(_priceFocus),
-                    onSaved: (value) => _formData['title'] = value,
+                    */
+                    onSaved: (value) => _formData['name'] = value,
                     validator: (value) {
                       if (value!.trim().isEmpty) {
-                        return 'Informe um título';
+                        return 'Informe um nome';
                       }
 
                       if (value.trim().length < 2) {
@@ -201,6 +225,7 @@ class _FormScreenState extends State<FormScreen> {
                       return null;
                     },
                   ),
+                  /*
                   TextFormField(
                     initialValue: _formData['price'].toString(),
                     decoration: InputDecoration(labelText: 'Preço'),
@@ -224,6 +249,7 @@ class _FormScreenState extends State<FormScreen> {
                       return null;
                     },
                   ),
+                  // no momento n preciso de descrição
                   TextFormField(
                     initialValue: _formData['description'],
                     decoration: InputDecoration(labelText: 'Descrição'),
@@ -247,8 +273,43 @@ class _FormScreenState extends State<FormScreen> {
                       return null;
                     },
                   ),
+                  */
                   SizedBox(
                     height: 5,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      //print(camera);
+                      //  claro, antes de ir pra camera é preciso inicializá-la
+                      await camProvider.inicializaCamera();
+                      //  o abaixo precisa vir pelo provider
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      TakePictureScreen(camera: camera)))
+                          .then((value) {
+                        if (value = true) {
+                          permiteFoto = true;
+                          setState(() {});
+                        }
+                        // preciso colocar uma exceção pra quando a foto já existir e ent pegar pelo servidor
+                      });
+                    },
+                    child: Text('tirar foto'),
+                  ),
+                  //------------------------------------------------------------
+                  permiteFoto
+                      ? DisplayPictureScreen(imagePath: camProvider.imagePath)
+                      : Spacer(),
+                  //------------------------------------------------------------
+                  //
+                  // onde o formulário é salvo
+                  ElevatedButton(
+                    onPressed: () {
+                      _saveForm();
+                    },
+                    child: Text('cadastrar'),
                   ),
                   //
                   // a parte seguinte comentada pode ser util p/ "focus" e o "saveForm"

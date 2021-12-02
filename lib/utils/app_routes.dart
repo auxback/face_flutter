@@ -4,5 +4,5 @@ class AppRoutes {
   static const CNPJ_HOME_SCREEN = '/cnpj-home';
   static const COLAB_REG_SCREEN = '/colab-reg';
   static const COLABS_SCREEN = '/colabs';
-  static const COLAB_CAM_SCREEN = '/colabs-cam';
+  //static const COLAB__SCREEN = '/colabs-cam';
 }

@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:face_teste/provider/providerCamera.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
@@ -78,8 +80,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // where it was saved.
             final image = await _controller.takePicture();
 
-            // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
+            //manda o caminho do arquivo localmente pra o provider
+            Provider.of<ProviderCamera>(context, listen: false).imagePath =
+                image.path;
+            //precisa retornar pra mostrar a foto
+            Navigator.of(context).pop(context);
+            /*
+            push(
               MaterialPageRoute(
                 builder: (context) => DisplayPictureScreen(
                   // Pass the automatically generated path to
@@ -88,11 +95,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 ),
               ),
             );
+            */
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
           }
         },
+
         child: const Icon(Icons.camera_alt),
       ),
     );
@@ -101,7 +110,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
 //------------------------------------------------------------------------------
 
-// A widget that displays the picture taken by the user.
+// vai dar um pop e usar esse widget, mas precisa de "awaits"
+
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
 
@@ -111,11 +121,6 @@ class DisplayPictureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //print(imagePath);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
+    return Image.file(File(imagePath));
   }
 }

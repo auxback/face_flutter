@@ -3,7 +3,7 @@ import 'dart:io';
 class Colab {
   final String id;
   final String name;
-  final File image;
+  final String image;
 
   Colab({
     required this.name,

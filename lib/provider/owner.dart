@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:convert';
 import 'package:face_teste/models/colab.dart';
 import 'package:face_teste/utils/constants.dart';
@@ -16,7 +17,8 @@ class OwnerProvider with ChangeNotifier {
   // Esse método vai ser usado lá no "exemplo.dart" q seria o "regScreen".
   // Basicamente só precisa mandar a foto em Base64 e dps colocar ela numa var tipo File
   //quando usar ela aqui
-  Future<void> metodoEnviaColabBDeAdd(String image, String name) async {
+  Future<void> addColab(String name, File image) async {
+    /*
     File imageFile = new File(image);
     List<int> imageBytes = imageFile.readAsBytesSync();
     // depois só usar base64Decode no inverso...
@@ -32,11 +34,26 @@ class OwnerProvider with ChangeNotifier {
         },
       ),
     );
+    */
+    //arquivo local q vem lá do formul
+    File imageFile = image;
+
+    List<int> imageBytes = imageFile.readAsBytesSync();
+
+    // depois só usar base64Decode no inverso...
+    String base64Image = base64Encode(imageBytes);
+
+    Random random = new Random();
 
     colabs.add(
       Colab(
-        // response.body é o id do obj (retorno) do servidor com 'name'
-        id: jsonDecode(response.body)['name'], image: imageFile, name: name,
+        // (SERVIDOR) response.body é o id do obj (retorno) do servidor com 'name'
+        //id: jsonDecode(response.body)['name'], image: imageFile, name: name,
+        //
+        // (TESTE) Vai guardar o "nome" e a foto em base64 como String
+        id: random.nextInt(100).toString(),
+        name: name,
+        image: base64Image,
       ),
     );
     // Precisa  notificar pq aqui é "criado" os itens q vem do servidor.
