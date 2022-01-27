@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class OwnerProvider with ChangeNotifier {
-  //dps colocar dentro de uma classe de constantes
+  //dps colocar dentro de uma classe de constante
   String baseUrl = Constants.BASE_API_URL;
 
   List<Colab> colabs = [];
