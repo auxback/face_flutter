@@ -22,8 +22,7 @@ class _FormScreenState extends State<FormScreen> {
   final _imageUrlFocus = FocusNode();
 
 //
-  late ProviderCamera camProvider =
-      Provider.of<ProviderCamera>(context, listen: false);
+  late ProviderCamera camProvider = Provider.of(context, listen: false);
   late CameraDescription camera = camProvider.firstCamera;
 
   late OwnerProvider ownerProvider = Provider.of(context, listen: false);

@@ -10,3 +10,18 @@ a parte q o Provider.imagePath tá sendo igual a tal coisa.
 tmbm no "nome" talvez.
 
 - no momento, agora fazendo o listTile de "colabs_screen.dart", mas preciso entender como trabalhar com imagens dentro do Dart, pois File só corresponde ao caminho do arqui e quando passando p/ base64 vira uma string. Então, como usar uma imagem no flutter passando de b64 (linha 41 e 44 em "owner.dart").
+
+solução abaixo:
+
+Future<String> _createFileFromString() async {
+final encodedStr = "put base64 encoded string here";
+Uint8List bytes = base64.decode(encodedStr);
+String dir = (await getApplicationDocumentsDirectory()).path;
+File file = File(
+    "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".pdf");
+await file.writeAsBytes(bytes);
+return file.path;
+ }
+
+
+ - preciso colocar a conversão de b64 pra File (método) no provider e executar dentro do widget Tile recebendo o colab...

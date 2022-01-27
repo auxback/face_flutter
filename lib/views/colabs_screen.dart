@@ -23,6 +23,7 @@ class _ColabsScreenState extends State<ColabsScreen> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(ownerProv.colabs[index].toString()),
+              //executa o método em cada ítem retornando
               //leading: CircleAvatar(backgroundImage: ,),
             );
           }),
