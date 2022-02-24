@@ -99,6 +99,7 @@ class _FormScreenState extends State<FormScreen> {
     //salva as infos que foram alteradas no formulario
     _formGK.currentState!.save();
 
+    // Ao tirar a foto, já é marcado o caminho da foto
     image = File(camProvider.imagePath);
 
     // preciso deixar essa criação dentro do try
@@ -276,6 +277,7 @@ class _FormScreenState extends State<FormScreen> {
                   SizedBox(
                     height: 5,
                   ),
+                  // BOTÃO CAPTURA DE FOTO
                   ElevatedButton(
                     onPressed: () async {
                       //print(camera);

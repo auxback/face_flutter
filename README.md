@@ -11,7 +11,7 @@ tmbm no "nome" talvez.
 
 - no momento, agora fazendo o listTile de "colabs_screen.dart", mas preciso entender como trabalhar com imagens dentro do Dart, pois File só corresponde ao caminho do arqui e quando passando p/ base64 vira uma string. Então, como usar uma imagem no flutter passando de b64 (linha 41 e 44 em "owner.dart").
 
-solução abaixo:
+solução abaixo (retorno da foto do BD):
 
 Future<String> _createFileFromString() async {
 final encodedStr = "put base64 encoded string here";

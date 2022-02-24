@@ -11,11 +11,17 @@ class CnpjHomeScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          Container(
+            height: 80,
+          ),
           Row(
             children: [
               Expanded(
                   child: Row(
                 children: [
+                  SizedBox(
+                    width: 30,
+                  ),
                   Text('Bem vindo(a): Loja XXXX'),
                   SizedBox(
                     width: 30,
